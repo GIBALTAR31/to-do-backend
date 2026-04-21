@@ -45,7 +45,7 @@ func GetAllTodos (pool *pgxpool.Pool) ([]models.Todo, error) {
 
 	var query string = `
 		SELECT * FROM todos 
-		ORDER BY created_at DESC
+		ORDER BY created_at 
 	`
 	var rows, err = pool.Query(ctx, query)
 	
@@ -76,4 +76,28 @@ func GetAllTodos (pool *pgxpool.Pool) ([]models.Todo, error) {
 	}
 
 	return todos, nil
+}
+
+func GetTodoByID (pool *pgxpool.Pool, id int) (*models.Todo, error) {
+	var ctx context.Context
+	var cancel context.CancelFunc
+	ctx, cancel = context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	var query string = `
+		SELECT * FROM todos WHERE id = $1
+	`
+	var todo models.Todo
+	var err = pool.QueryRow(ctx, query, id).Scan(
+		&todo.ID,
+		&todo.Title,
+		&todo.Completed,
+		&todo.CreatedAt,
+		&todo.UpdatedAt,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return &todo, nil
 }
