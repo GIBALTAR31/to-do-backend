@@ -10,7 +10,20 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5/pgxpool"
+
+	_ "todo_api/docs"
+
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+
+	
 )
+
+// @title Todo API
+// @version 1.0
+// @description This is a simple Todo API
+// @host localhost:3000
+// @BasePath /
 
 func main() {
 	// Database entry point
@@ -40,6 +53,8 @@ func main() {
 			"database": "connected",
 		})
 	})
+
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	router.POST("/todos", handlers.CreateTodoHandler(pool))
 	router.GET("/todos", handlers.GetAllTodosHandler(pool))

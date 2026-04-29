@@ -20,6 +20,17 @@ type UpdateTodoInput struct {
 	Completed *bool   `json:"completed"`
 }
 
+// CreateTodoHandler godoc
+// @Summary Create a new todo
+// @Description Create a new todo item
+// @Tags todos
+// @Accept json
+// @Produce json
+// @Param todo body CreateTodoInput true "Todo input"
+// @Success 201 {object} models.Todo
+// @Failure 400 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /todos [post]
 func CreateTodoHandler(pool *pgxpool.Pool) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var input CreateTodoInput
@@ -40,6 +51,14 @@ func CreateTodoHandler(pool *pgxpool.Pool) gin.HandlerFunc {
 	}
 }
 
+// GetAllTodosHandler godoc
+// @Summary Get all todos
+// @Description Retrieve all todo items
+// @Tags todos
+// @Produce json
+// @Success 200 {array} models.Todo
+// @Failure 500 {object} map[string]string
+// @Router /todos [get]
 func GetAllTodosHandler(pool *pgxpool.Pool) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		todos, err := repository.GetAllTodos(pool)
@@ -53,6 +72,17 @@ func GetAllTodosHandler(pool *pgxpool.Pool) gin.HandlerFunc {
 	}
 }
 
+// GetTodoByIDHandler godoc
+// @Summary Get a todo by ID
+// @Description Retrieve a todo by its ID
+// @Tags todos
+// @Produce json
+// @Param id path int true "Todo ID"
+// @Success 200 {object} models.Todo
+// @Failure 400 {object} map[string]string
+// @Failure 404 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /todos/{id} [get]
 func GetTodoByIDHandler(pool *pgxpool.Pool) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		idStr := c.Param("id")
@@ -75,6 +105,19 @@ func GetTodoByIDHandler(pool *pgxpool.Pool) gin.HandlerFunc {
 	}
 }
 
+// UpdateToDoHandler godoc
+// @Summary Update a todo
+// @Description Update an existing todo by ID (partial update)
+// @Tags todos
+// @Accept json
+// @Produce json
+// @Param id path int true "Todo ID"
+// @Param todo body UpdateTodoInput true "Updated todo data"
+// @Success 200 {object} models.Todo
+// @Failure 400 {object} map[string]string
+// @Failure 404 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /todos/{id} [put]
 func UpdateToDoHandler(pool *pgxpool.Pool) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		idStr := c.Param("id")
@@ -128,6 +171,17 @@ func UpdateToDoHandler(pool *pgxpool.Pool) gin.HandlerFunc {
 	}
 }
 
+// DeleteTodoHandler godoc
+// @Summary Delete a todo
+// @Description Delete a todo by ID
+// @Tags todos
+// @Produce json
+// @Param id path int true "Todo ID"
+// @Success 204 {string} string "No Content"
+// @Failure 400 {object} map[string]string
+// @Failure 404 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /todos/{id} [delete]
 func DeleteTodoHandler(pool *pgxpool.Pool) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		idStr := c.Param("id")
@@ -149,6 +203,6 @@ func DeleteTodoHandler(pool *pgxpool.Pool) gin.HandlerFunc {
 			return
 		}
 
-		c.JSON(http.StatusNoContent, gin.H{"message": "Todo deleted successfully"})
+		c.JSON(http.StatusNoContent, nil)
 	}
 }

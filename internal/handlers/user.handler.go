@@ -15,6 +15,17 @@ type RegisterRequest struct {
 	Password string `json:"password" validate:"required"`
 }
 
+// CreateUserHandler godoc
+// @Summary Register a new user
+// @Description Register a new user with email and password
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param user body RegisterRequest true "User registration input"
+// @Success 201 {object} models.User
+// @Failure 400 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /auth/register [post]
 func CreateUserHandler(pool *pgxpool.Pool) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var request RegisterRequest
