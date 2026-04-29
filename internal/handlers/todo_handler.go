@@ -16,12 +16,12 @@ type CreateTodoInput struct {
 }
 
 type UpdateTodoInput struct {
-	Title 	*string 	`json:"title"`
-	Completed *bool `json:"completed"`
+	Title     *string `json:"title"`
+	Completed *bool   `json:"completed"`
 }
 
 func CreateTodoHandler(pool *pgxpool.Pool) gin.HandlerFunc {
-	return func (c *gin.Context) {
+	return func(c *gin.Context) {
 		var input CreateTodoInput
 
 		if err := c.ShouldBindJSON(&input); err != nil {
@@ -64,9 +64,9 @@ func GetTodoByIDHandler(pool *pgxpool.Pool) gin.HandlerFunc {
 		todo, err := repository.GetTodoByID(pool, id)
 
 		if err != nil {
-			if err == pgx.ErrNoRows{
+			if err == pgx.ErrNoRows {
 				c.JSON(http.StatusNotFound, gin.H{"error": "Todo not found"})
-				return 
+				return
 			}
 
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -75,8 +75,8 @@ func GetTodoByIDHandler(pool *pgxpool.Pool) gin.HandlerFunc {
 	}
 }
 
-func UpdateToDoHandler(pool *pgxpool.Pool) gin.HandlerFunc{
-	return func (c *gin.Context){
+func UpdateToDoHandler(pool *pgxpool.Pool) gin.HandlerFunc {
+	return func(c *gin.Context) {
 		idStr := c.Param("id")
 		id, err := strconv.Atoi(idStr)
 
@@ -86,7 +86,7 @@ func UpdateToDoHandler(pool *pgxpool.Pool) gin.HandlerFunc{
 
 		var input UpdateTodoInput
 
-		if err := c.ShouldBindJSON(&input);  err != nil {
+		if err := c.ShouldBindJSON(&input); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
@@ -98,8 +98,8 @@ func UpdateToDoHandler(pool *pgxpool.Pool) gin.HandlerFunc{
 
 		existing, err := repository.GetTodoByID(pool, id)
 
-		if err != nil{
-			if err == pgx.ErrNoRows{
+		if err != nil {
+			if err == pgx.ErrNoRows {
 				c.JSON(http.StatusNotFound, gin.H{"error": "Todo not found"})
 				return
 			}
@@ -129,12 +129,12 @@ func UpdateToDoHandler(pool *pgxpool.Pool) gin.HandlerFunc{
 }
 
 func DeleteTodoHandler(pool *pgxpool.Pool) gin.HandlerFunc {
-	return func (c *gin.Context) {
+	return func(c *gin.Context) {
 		idStr := c.Param("id")
 		id, err := strconv.Atoi(idStr)
 
 		if err != nil {
-			c.JSON (http.StatusBadRequest, gin.H{"error": "Invalid todo ID"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid todo ID"})
 			return
 		}
 
@@ -149,6 +149,6 @@ func DeleteTodoHandler(pool *pgxpool.Pool) gin.HandlerFunc {
 			return
 		}
 
-		c.JSON(http.StatusOK, gin.H{"message": "Todo deleted successfully"})
+		c.JSON(http.StatusNoContent, gin.H{"message": "Todo deleted successfully"})
 	}
 }
