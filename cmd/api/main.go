@@ -7,6 +7,7 @@ import (
 	"todo_api/internal/config"
 	"todo_api/internal/database"
 	"todo_api/internal/handlers"
+	"todo_api/internal/middleware"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -15,8 +16,6 @@ import (
 
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-
-	
 )
 
 // @title Todo API
@@ -56,13 +55,24 @@ func main() {
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	router.POST("/todos", handlers.CreateTodoHandler(pool))
-	router.GET("/todos", handlers.GetAllTodosHandler(pool))
-	router.GET("/todos/:id", handlers.GetTodoByIDHandler(pool))
-	router.PUT("/todos/:id", handlers.UpdateToDoHandler(pool))
-	router.DELETE("/todos/:id", handlers.DeleteTodoHandler(pool))
+	
 
-	router.POST("/auth/register",  handlers.CreateUserHandler(pool))
+	protected := router.Group("/todos")
+	protected.Use(middleware.AuthMiddleware(cfg))
+	{
+		protected.POST("", handlers.CreateTodoHandler(pool))
+		protected.GET("", handlers.GetAllTodosHandler(pool))
+		protected.GET("/:id", handlers.GetTodoByIDHandler(pool))
+		protected.PUT("/:id", handlers.UpdateToDoHandler(pool))
+		protected.DELETE("/:id", handlers.DeleteTodoHandler(pool))
+	}
+
+	
+
+	router.POST("/auth/register", handlers.CreateUserHandler(pool))
+	router.POST("/auth/login", handlers.LoginHandler(pool, cfg))
+
+	router.GET("/protected-test", middleware.AuthMiddleware(cfg), handlers.TestProtectedHandler() )
 
 	router.Run(":" + cfg.Port)
 }
