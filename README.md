@@ -1,8 +1,10 @@
 # 📝 ToDo backend
 
-ToDo backend adalah RESTful API sederhana untuk mengelola daftar tugas (todo list) yang dibangun menggunakan Go (Golang) dengan framework Gin. API ini mengimplementasikan JWT Authentication, PostgreSQL sebagai database, serta menerapkan Clean Architecture untuk menjaga struktur kode tetap rapi dan scalable.
+ToDo Backend is a simple RESTful API designed to manage a todo list, built using Go (Golang) with the Gin framework. This API implements JWT Authentication, uses PostgreSQL as the database, and follows Clean Architecture principles to ensure a well-structured, maintainable, and scalable codebase.
 
-Dokumentasi API juga tersedia menggunakan Swagger untuk mempermudah eksplorasi endpoint.
+This project was primarily developed as a learning resource to understand and practice backend development fundamentals, including API design, authentication, database integration, and code structuring.
+
+API documentation is also available using Swagger to simplify endpoint exploration.
 
 ## 🚀 Features
 - 🔐 JWT-based Authentication (Login & Register)
