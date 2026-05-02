@@ -5,16 +5,16 @@ ToDo backend adalah RESTful API sederhana untuk mengelola daftar tugas (todo lis
 Dokumentasi API juga tersedia menggunakan Swagger untuk mempermudah eksplorasi endpoint.
 
 ## 🚀 Features
-🔐 JWT-based Authentication (Login & Register)
-✅ CRUD ToDo (Create, Read, Update, Delete)
-🧱 Clean Architecture (Separation of Concerns)
-🐘 PostgreSQL Database
-📄 API Documentation with Swagger
-⚡ Fast and lightweight using Gin framework
+🔐 JWT-based Authentication (Login & Register) \n
+✅ CRUD ToDo (Create, Read, Update, Delete) \n
+🧱 Clean Architecture (Separation of Concerns) \n
+🐘 PostgreSQL Database \n
+📄 API Documentation with Swaggern
+⚡ Fast and lightweight using Gin framework \n
 
 ## 🏗️ Tech Stack
-Language: Go (Golang)
-Framework: Gin
-Database: PostgreSQL
-Authentication: JWT (JSON Web Token)
-Documentation: Swagger (Swaggo)
+Language: Go (Golang) \n
+Framework: Gin \n
+Database: PostgreSQL \n
+Authentication: JWT (JSON Web Token) \n
+Documentation: Swagger (Swaggo) \n
