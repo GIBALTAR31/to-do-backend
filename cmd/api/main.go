@@ -24,6 +24,10 @@ import (
 // @host localhost:3000
 // @BasePath /
 
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
+
 func main() {
 	// Database entry point
 	var cfg *config.Config

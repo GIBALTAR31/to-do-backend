@@ -42,7 +42,7 @@ type LoginResponse struct {
 func CreateUserHandler(pool *pgxpool.Pool) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var request RegisterRequest
-		
+
 		if err := c.BindJSON(&request); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
@@ -55,7 +55,7 @@ func CreateUserHandler(pool *pgxpool.Pool) gin.HandlerFunc {
 
 		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(request.Password), bcrypt.DefaultCost)
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to hash password" +  err.Error()})
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to hash password" + err.Error()})
 			return
 		}
 
@@ -77,7 +77,18 @@ func CreateUserHandler(pool *pgxpool.Pool) gin.HandlerFunc {
 	}
 }
 
-func LoginHandler (pool *pgxpool.Pool, cfg *config.Config) gin.HandlerFunc {
+// LoginHandler godoc
+// @Summary Login a user
+// @Description Login a user with email and password
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param user body LoginRequest true "User login input"
+// @Success 200 {object} LoginResponse
+// @Failure 400 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /auth/login [post]
+func LoginHandler(pool *pgxpool.Pool, cfg *config.Config) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var loginReq LoginRequest
 
@@ -92,9 +103,9 @@ func LoginHandler (pool *pgxpool.Pool, cfg *config.Config) gin.HandlerFunc {
 			return
 		}
 
-		err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(loginReq.Password)) 
+		err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(loginReq.Password))
 		if err != nil {
-			c.JSON(http.StatusUnauthorized, gin.H{"error" : "Invalid email or password"})
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid email or password"})
 			return
 		}
 
@@ -102,14 +113,14 @@ func LoginHandler (pool *pgxpool.Pool, cfg *config.Config) gin.HandlerFunc {
 		//map[string]any{}
 		claims := jwt.MapClaims{
 			"user_id": user.ID,
-			"email": user.Email,
-			"exp": time.Now().Add(24 * time.Hour).Unix(),
+			"email":   user.Email,
+			"exp":     time.Now().Add(24 * time.Hour).Unix(),
 		}
 
 		token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
 		tokenString, err := token.SignedString([]byte(cfg.JWTSecret))
-		if err != nil{
+		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to genereat token" + err.Error()})
 			return
 		}

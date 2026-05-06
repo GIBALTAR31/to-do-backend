@@ -1,0 +1,9 @@
+basePath: /
+host: localhost:3000
+info:
+  contact: {}
+  description: This is a simple Todo API
+  title: Todo API
+  version: "1.0"
+paths: {}
+swagger: "2.0"

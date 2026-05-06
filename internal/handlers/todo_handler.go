@@ -26,6 +26,7 @@ type UpdateTodoInput struct {
 // @Tags todos
 // @Accept json
 // @Produce json
+// @Security BearerAuth
 // @Param todo body CreateTodoInput true "Todo input"
 // @Success 201 {object} models.Todo
 // @Failure 400 {object} map[string]string
@@ -63,6 +64,7 @@ func CreateTodoHandler(pool *pgxpool.Pool) gin.HandlerFunc {
 // @Description Retrieve all todo items
 // @Tags todos
 // @Produce json
+// @Security BearerAuth
 // @Success 200 {array} models.Todo
 // @Failure 500 {object} map[string]string
 // @Router /todos [get]
@@ -91,6 +93,7 @@ func GetAllTodosHandler(pool *pgxpool.Pool) gin.HandlerFunc {
 // @Description Retrieve a todo by its ID
 // @Tags todos
 // @Produce json
+// @Security BearerAuth
 // @Param id path int true "Todo ID"
 // @Success 200 {object} models.Todo
 // @Failure 400 {object} map[string]string
@@ -132,6 +135,7 @@ func GetTodoByIDHandler(pool *pgxpool.Pool) gin.HandlerFunc {
 // @Tags todos
 // @Accept json
 // @Produce json
+// @Security BearerAuth
 // @Param id path int true "Todo ID"
 // @Param todo body UpdateTodoInput true "Updated todo data"
 // @Success 200 {object} models.Todo
@@ -204,6 +208,7 @@ func UpdateToDoHandler(pool *pgxpool.Pool) gin.HandlerFunc {
 // @Description Delete a todo by ID
 // @Tags todos
 // @Produce json
+// @Security BearerAuth
 // @Param id path int true "Todo ID"
 // @Success 204 {string} string "No Content"
 // @Failure 400 {object} map[string]string
